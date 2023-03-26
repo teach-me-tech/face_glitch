@@ -1,4 +1,5 @@
 Face Blur and Glitch Application
+
 This is a Python-based application that can blur the faces in a video or a live video feed using OpenCV and also apply a glitch effect to the blurred region.
 
 Dependencies
