@@ -1,54 +1,31 @@
-import cv2
-import urllib.request
-import numpy as np
+Face Blur and Glitch Application
+This is a Python-based application that can blur the faces in a video or a live video feed using OpenCV and also apply a glitch effect to the blurred region.
 
-# # Download the face detection classifier
-# url = 'https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml'
-# urllib.request.urlretrieve(url, 'haarcascade_frontalface_default.xml')
+Dependencies
+Python 3
+OpenCV (cv2)
+Numpy
+Installation
+Install Python 3 from the official website - https://www.python.org/downloads/
 
-# Load the face detection classifier
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+Install OpenCV and Numpy using pip:
 
-# Create a video capture object to read frames from the camera
-cap = cv2.VideoCapture(0)
+pip install opencv-python numpy
 
-# Loop through the frames in the video stream
-while True:
-    # Read the next frame from the camera
-    ret, frame = cap.read()
+Download the haarcascade_frontalface_default.xml file which is used by OpenCV for face detection. It can be downloaded from the following link - https://github.com/opencv/opencv/blob/master/data/haarcascades/haarcascade_frontalface_default.xml
 
-    # Detect faces in the frame
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+Usage
+Clone the repository or download the source code.
 
-    # Blur the detected faces
-    for (x, y, w, h) in faces:
-        face_roi = frame[y:y+h, x:x+w]
-        face_glitch = cv2.stylization(face_roi, sigma_s=60, sigma_r=0.7)
-        face_glitch_color = cv2.applyColorMap(face_glitch, cv2.COLORMAP_JET)
-        # Combine original and glitched images with XOR operation
-        height, width, channels = face_roi.shape
-        rand_x = np.random.randint(-5, 5)
-        rand_y = np.random.randint(-5, 5)
-        mask = np.zeros((height, width), dtype=np.uint8)
-        mask[rand_y:y+h+rand_y, rand_x:x+w+rand_x] = 255
-        face_glitch_masked = cv2.bitwise_xor(face_roi, face_glitch_color, mask=mask)
-        frame[y:y+h, x:x+w] = face_glitch_masked
-        
-    # Display the processed frame in a window
-    cv2.imshow('Blurred Video', frame)
+Save the haarcascade_frontalface_default.xml file in the same directory as the code file.
 
-    # Wait for a key press to exit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-    # Check if the Esc key is pressed
-    if cv2.waitKey(1) == 27:
-        break
+Run the code using the following command:
 
-    # # Check if the window is closed
-    # if cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
-    #     break
+python face_blur_glitch.py
 
-# Release the resources
-cap.release()
-cv2.destroyAllWindows()
+A window will open showing the live feed from the camera. Press the ESC key to exit the application.
+
+To change the amount of blur or the intensity of the glitch effect, change the values of blur_amount and glitch_intensity respectively.
+
+Acknowledgements
+The code for the face detection using OpenCV was adapted from the OpenCV Face Detection Documentation
